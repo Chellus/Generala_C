@@ -7,16 +7,16 @@ void imprimirArreglo(int* arr)
     }
 }
 
-void tirarDados(int *arr)
+void tirarDados(Jugador* jugador)
 {
     int i;
     printf("Presione Enter para tirar los dados ");
     getchar();
     srand(time(0));
     
-    for (i = 0; i<5; i++) {
-        arr[i] = rand() % 6 + 1;;
-        printf (" Dado %d : %d\n ", i+1, arr[i]);
+    for (i = 0; i < 5; i++) {
+        jugador->dados[i] = rand() % 6 + 1;
+        printf (" Dado %d : %d\n ", i+1, jugador->dados[i]);
     }
 }
 

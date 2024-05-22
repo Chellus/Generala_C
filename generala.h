@@ -12,6 +12,8 @@
 */
 typedef struct Jugador {
     char nombre[20];
+    bool maquina;
+    int dados[5];
     int categorias [11][2];
 } Jugador;
 
@@ -19,7 +21,7 @@ typedef struct Jugador {
 void imprimirArreglo(int* arr);
 
 /* funciones referentes a los dados */
-void tirarDados(int* arr);
+void tirarDados(Jugador* jugador);
 void consultaCambio(int* posiciones);
 void cambioDados(int* dados, int* posiciones);
 
