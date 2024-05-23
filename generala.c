@@ -48,141 +48,109 @@ void consultaCambio(Jugador* jugador)
 }
 
 // Funciones referentes a la verificacion de las jugadas
-int checkNum(Jugador* jugador, int dado);
+int checkNum(Jugador* jugador, int dado)
 {
-    int a = 2;
-    if (jugador->categorias[dado][1]) {
-        return a;
-    }
-    else if(x==0) {
-        int suma = 0;
-        for (int i = 0; i<5; i++) {
-            if (arr[i] == y) {
-                suma+=1;
-            }
-        
+    int cont = 0;
+    for (int i = 0; i<5; i++) {
+        if (jugador->dados[i] == dado) {
+            cont++;
         }
-        return suma*y;
+        
     }
+    return cont * dado;
 }
 
-int checkEsca(int *arr,int x)
+int checkEsca(Jugador* jugador)
 {
-    int a = 2;
-    if (x==1) {
-        return a;
-    }
-    else if(x==0){
-	    int contador[6] = {0};
-	    for (int i = 0; i < 5; i++) {
-	    	contador[arr[i] - 1] = contador[arr[i] - 1] + 1;
-	    }
-	    if ((contador[0] >= 1 && contador[1] >= 1 && contador[2] >= 1 && contador[3] >= 1 && contador[4] >= 1) ||
-	    	(contador[1] >= 1 && contador[2] >= 1 && contador[3] >= 1 && contador[4] >= 1 && contador[5] >= 1)) {
-	    	return true;
-	    }
-	    	return false;
-    }
+	int contador[6] = {0};
+    int dados[5] = jugador->dados;
+
+	for (int i = 0; i < 5; i++) {
+		contador[dados[i] - 1] = contador[dados[i] - 1] + 1;
+	}
+	if ((contador[0] >= 1 && contador[1] >= 1 && contador[2] >= 1 && contador[3] >= 1 && contador[4] >= 1) ||
+		(contador[1] >= 1 && contador[2] >= 1 && contador[3] >= 1 && contador[4] >= 1 && contador[5] >= 1)) {
+		return true;
+	}
+		return false;
+    
 }
 
-int checkFull(int *arr,int x) {
-    int a = 2;
-    if (x==1) {
-        return a;
-    }
-    else if(x==0){
+int checkFull(Jugador* jugador)
+{
 	int contador[6] = {0};
-	for (int i = 0; i < 5; i++) {
-		contador[arr[i] - 1]++;
-	}
 	bool tresIguales = false;
 	bool dosIguales = false;
-	for (int i = 0; i < 6; i++) {
-		if (contador[i] == 3) {
-			tresIguales = true;
-		} else if (contador[i] == 2) {
-			dosIguales = true;
-		}
+
+	for (int i = 0; i < 5; i++) {
+		contador[jugador->dados[i] - 1]++;
 	}
+
+
+	for (int i = 0; i < 6; i++) {
+		if (contador[i] == 3)
+			tresIguales = true;
+		else if (contador[i] == 2)
+			dosIguales = true;
+		
+	}
+
 	return tresIguales && dosIguales;
 }
-}
 
-int checkPoker(int *arr,int x) {
-    int a = 2;
-    if (x==1) {
-        return a;
-    }
-    else if(x==0){
+
+bool checkPoker(Jugador* jugador)
+{
 	int contador[6] = {0};
+
 	for (int i = 0; i < 5; i++) {
-		contador[arr[i] - 1]++;
+		contador[jugador->dados[i] - 1]++;
 	}
+
 	for (int i = 0; i < 6; i++) {
-		if (contador[i] == 4 || contador[i] ==5) {
+		if (contador[i] == 4 || contador[i] ==5)
 			return true;
-		}
 	}
 	return false;
 }
-}
-int checkGenerala(int *arr,int x)
+
+bool checkGenerala(Jugador* jugador)
 {
-    int a = 2;
-    if (x==1) {
-        return a;
-    }
-    else if(x==0){
-        if (arr[0] == arr[1] == arr[2] == arr[3] == arr[4]){
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
+    int dados[5] = jugador->dados;
+
+    if (dados[0] == dados[1] == dados[2] == dados[3] == dados[4])
+        return true;
+    else
+        return false;
 }
 
-int checkGeneralaDoble(int *arr,int x, int y)
+bool checkGeneralaDoble(Jugador* jugador)
 {
-    int a = 2;
-    if (x==1) {
-        return a;
-    }
-    else if(x==0){
-        if (arr[0] == arr[1] == arr[2] == arr[3] == arr[4] && y==2) {
-            return true;
-        }
-        else{
-            return false;
-        }
-    }
-}
-
-void tablaPuntajes(int *arr, int *jugadasDispo)
-{
-    int sumauno = checkNum(arr,jugadasDispo[0],1);
-    int sumados = checkNum(arr,jugadasDispo[1],2);
-    int sumatres = checkNum(arr,jugadasDispo[2],3);
-    int sumacuatro= checkNum(arr,jugadasDispo[3],4);
-    int sumacinco= checkNum(arr,jugadasDispo[4],5);
-    int sumaseis= checkNum(arr,jugadasDispo[5],6);
-    int escalera= checkEscalera(arr,jugadasDispo[6]);
-    int full= checkFull(arr,jugadasDispo[7]);
-    int poker= checkPoker(arr,jugadasDispo[8]);
-    int generala= checkGenerala(arr,jugadasDispo[9]);
-    int generaladoble= checkGeneralaDoble(arr,jugadasDispo[10],generala);
-    printf("_Tabla de Puntajes_\n");
-    printf("| Categorías |\t Jugador 1 |\t Jugador 2 |\n");
-    printf("|     Uno    |\t %d |\t %d |\n", sumauno, 0);
-    printf("|     Dos    |\t %d |\t %d |\n", sumados, 0);
-    printf("|    Tres    |\t %d |\t %d |\n", sumatres, 0);
-    printf("|    Cuatro  |\t %d |\t %d |\n", sumacuatro, 0);
-    printf("|    Cinco   |\t %d |\t %d |\n", sumacinco, 0);
-    printf("|    Seis    |\t %d |\t %d |\n", sumaseis, 0);
-    printf("|   Escalera |\t %d |\t %d |\n", escalera, 0);
-    printf("|    Full    |\t %d |\t %d |\n", full, 0);
-    printf("|    Poker   |\t %d |\t %d |\n", poker, 0);
-    printf("|   Generala |\t %d |\t %d |\n", generala, 0);
-    printf("| GeneralaDob|\t %d |\t %d |\n", generaladoble, 0);
+    bool segunda_generala = jugador->categorias[9][1];
     
+    return checkGenerala(jugador) && segunda_generala;
+    
+}
+
+int* chequeoJugadas(Jugador* jugador)
+{
+    int suma_uno = checkNum(jugador, 1);
+    int suma_dos = checkNum(jugador, 2);
+    int suma_tres = checkNum(jugador, 3);
+    int suma_cuatro = checkNum(jugador, 4);
+    int suma_cinco = checkNum(jugador, 5);
+    int suma_seis = checkNum(jugador, 6);
+
+    /* estas variables solo pueden ser 1 o 0 */
+    int escalera = checkEscalera(jugador);
+    int full = checkFull(jugador);
+    int poker = checkPoker(jugador);
+    int generala = checkGenerala(jugador);
+    int generala_doble = checkGeneralaDoble(jugador);
+
+    /* calculamos la tabla de puntajes del jugador con estos dados */
+    int categorias[] = {suma_uno, suma_dos, suma_tres, suma_cuatro, suma_cinco, suma_seis, escalera * 20, full * 30,
+                        poker * 40, generala * 50, generala_doble * 100};
+
+    return categorias;
 }

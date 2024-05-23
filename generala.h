@@ -25,10 +25,10 @@ void tirarDados(Jugador* jugador);
 void consultaCambio(Jugador* jugador);
 
 /* funciones para verificar jugadas */
-int checkNum(int* arr, int x, int y);
-int checkEscalera(int* arr, int x);
-int checkFull(int* arr, int x);
-int checkPoker(int* arr, int x);
-int checkGenerala(int* arr, int x);
-int checkGeneralaDoble(int* arr, int x, int y);
-void tablaPuntajes(int* arr, int* jugadas_disponibles);
+int checkNum(Jugador* jugador, int dado);
+bool checkEscalera(Jugador* jugador);
+bool checkFull(Jugador* jugador);
+bool checkPoker(Jugador* jugador);
+bool checkGenerala(Jugador* jugador);
+bool checkGeneralaDoble(Jugador* jugador);
+int* chequeoJugadas(Jugador* jugador);
