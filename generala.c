@@ -128,16 +128,16 @@ void elegirCategoria(Jugador* jugador)
     int* puntos = chequeoJugadas(jugador);
 
     printf("\tELIJA UNA CATEGORIA ABIERTA\n");
-    printf("1. Uno: %s\n", jugador->categorias[0][1] ? "CERRADA" : "ABIERTA");
-    printf("2. Dos: %s\n", jugador->categorias[1][1] ? "CERRADA" : "ABIERTA");
-    printf("3. Tres: %s\n", jugador->categorias[2][1] ? "CERRADA" : "ABIERTA");
-    printf("4. Cuatro: %s\n", jugador->categorias[3][1] ? "CERRADA" : "ABIERTA");
-    printf("5. Cinco: %s\n", jugador->categorias[4][1] ? "CERRADA" : "ABIERTA");
-    printf("6. Seis(: %s\n", jugador->categorias[5][1] ? "CERRADA" : "ABIERTA");
-    printf("7. Escalera: %s\n", jugador->categorias[6][1] ? "CERRADA" : "ABIERTA");
-    printf("8. Full: %s\n", jugador->categorias[7][1] ? "CERRADA" : "ABIERTA");
-    printf("9. Poker: %s\n", jugador->categorias[8][1] ? "CERRADA" : "ABIERTA");
-    printf("10. Generala: %s\n", jugador->categorias[9][1] ? "CERRADA" : "ABIERTA");
+    printf("1. Uno:             %s\n", jugador->categorias[0][1] ? "CERRADA" : "ABIERTA");
+    printf("2. Dos:             %s\n", jugador->categorias[1][1] ? "CERRADA" : "ABIERTA");
+    printf("3. Tres:            %s\n", jugador->categorias[2][1] ? "CERRADA" : "ABIERTA");
+    printf("4. Cuatro:          %s\n", jugador->categorias[3][1] ? "CERRADA" : "ABIERTA");
+    printf("5. Cinco:           %s\n", jugador->categorias[4][1] ? "CERRADA" : "ABIERTA");
+    printf("6. Seis:            %s\n", jugador->categorias[5][1] ? "CERRADA" : "ABIERTA");
+    printf("7. Escalera:        %s\n", jugador->categorias[6][1] ? "CERRADA" : "ABIERTA");
+    printf("8. Full:            %s\n", jugador->categorias[7][1] ? "CERRADA" : "ABIERTA");
+    printf("9. Poker:           %s\n", jugador->categorias[8][1] ? "CERRADA" : "ABIERTA");
+    printf("10. Generala:       %s\n", jugador->categorias[9][1] ? "CERRADA" : "ABIERTA");
     printf("11. Generala Doble: %s\n", jugador->categorias[10][1] ? "CERRADA" : "ABIERTA");
 
     printf("Elija su opcion: ");
@@ -151,6 +151,13 @@ void elegirCategoria(Jugador* jugador)
     jugador->categorias[opcion - 1][0] = puntos[opcion - 1];
     jugador->categorias[opcion - 1][1] = 1;
 
+}
+
+void calcularPuntaje(Jugador* jugador)
+{
+    for (int i = 0; i < 11; i++) {
+        jugador->puntaje += jugador->categorias[i][0];
+    }
 }
 
 // Funciones referentes a la verificacion de las jugadas
@@ -346,5 +353,23 @@ void gameLoop(Jugador jugadores[], int num_jugadores)
         }
         if (ganador)
             break;
+    }
+
+    /* si ningun jugador gano por generala servida */
+    if (!ganador) {
+        int max_puntaje = 0;
+        int pos_max;
+        printf("Juego terminado con todas las categorias cerradas\n");
+        for (int i = 0; i < num_jugadores; i++) {
+            calcularPuntaje(&jugadores[i]);
+            printf("Puntaje de %s: %d\n", jugadores[i].nombre, jugadores[i].puntaje);
+
+            if (jugadores[i].puntaje > max_puntaje) {
+                max_puntaje = jugadores[i].puntaje;
+                pos_max = i;
+            }
+        }
+
+        printf("\nEl ganador es %s con un puntaje de %d\n", jugadores[pos_max].nombre, max_puntaje);
     }
 }

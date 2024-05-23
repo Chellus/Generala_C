@@ -33,7 +33,7 @@ void imprimirPuntajeDados(Jugador* jugador);
 Jugador crearJugador(const char* nombre, bool maquina);
 void imprimirCategorias(Jugador* jugador);
 void elegirCategoria(Jugador* jugador);
-
+void calcularPuntaje(Jugador* jugador);
 /* funciones para verificar jugadas */
 int checkNum(Jugador* jugador, int dado);
 int checkEscalera(Jugador* jugador);
@@ -45,19 +45,3 @@ int* chequeoJugadas(Jugador* jugador);
 
 /* funcion del juego principal*/
 void gameLoop(Jugador jugadores[], int num_jugadores);
-/*
-func gameLoop()
-    while True:
-        for jugador in jugadores:
-            if jugador no maquina:
-                for (i = 0; i < 3; i++)
-                    tirarDados()
-                    if (!consultaCambio()):
-                        elegirCategoria
-                        break
-                if generala_servida:
-                    jugador.ganador = True
-                    print("El jugador tal tal ha ganado por generala servida")
-                    break
-
-*/
