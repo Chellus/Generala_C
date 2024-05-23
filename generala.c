@@ -20,54 +20,38 @@ void tirarDados(Jugador* jugador)
     }
 }
 
-void consultaCambio(int* posiciones)
+void consultaCambio(Jugador* jugador)
 {
-    int camb;
-    printf("¿Desea cambiar algún dado? (0 para sí, 1 para no): ");
-    scanf("%d", &camb);
+    int cambiar;
+    printf("¿Desea cambiar algún dado? (1 para sí, 0 para no): ");
+    scanf("%d", &cambiar);
     
-    if (camb == 0) {
+    if (cambiar) {
         int consult;
-        for (int i = 0; i<5; i++) {
+        for (int i = 0; i < 5; i++) {
             printf("Desea cambiar el dado %d? (0 para sí, 1 para no): ", i+1);
             scanf("%d",&consult);
-            printf("%d",consult);
+            
             switch(consult) {
                 case 0:
-                    posiciones[i] = 0;
+                    jugador->dados[i] = rand() % 6 + 1;
                     break;
                 case 1:
-                    posiciones[i] = 1;
                     break;
                 default:
-                printf("Número inválido. Ingrese un 0 para sí o un 1 para no.\n");
-                i = i-1;
+                    printf("Número inválido. Ingrese un 0 para sí o un 1 para no.\n");
+                    i = i-1;
+                    break;
             }
-            printf("\nPosicion %d : %d\n", i, posiciones[i]);
-        }
-    }
-    else {
-        for (int i = 0; i < 5; i++) {
-            posiciones[i] = 1;
         }
     }
 }
 
-void cambioDados(int *dados, int *posiciones)
-{
-    for (int i = 0; i < 5; i++) {
-        if (posiciones[i] == 0) {
-            dados[i] = rand() % 6 + 1;
-        }
-        printf (" Dado %d : %d\n ", i+1, dados[i]);
-    }
-    
-}
 // Funciones referentes a la verificacion de las jugadas
-int checkNum(int *arr,int x,int y)
+int checkNum(Jugador* jugador, int dado);
 {
     int a = 2;
-    if (x==1) {
+    if (jugador->categorias[dado][1]) {
         return a;
     }
     else if(x==0) {
@@ -81,7 +65,7 @@ int checkNum(int *arr,int x,int y)
         return suma*y;
     }
 }
-    
+
 int checkEsca(int *arr,int x)
 {
     int a = 2;

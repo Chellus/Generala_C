@@ -14,7 +14,7 @@ typedef struct Jugador {
     char nombre[20];
     bool maquina;
     int dados[5];
-    int categorias [11][2];
+    int categorias[11][2];
 } Jugador;
 
 /* util */
@@ -22,8 +22,7 @@ void imprimirArreglo(int* arr);
 
 /* funciones referentes a los dados */
 void tirarDados(Jugador* jugador);
-void consultaCambio(int* posiciones);
-void cambioDados(int* dados, int* posiciones);
+void consultaCambio(Jugador* jugador);
 
 /* funciones para verificar jugadas */
 int checkNum(int* arr, int x, int y);
