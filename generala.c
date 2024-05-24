@@ -10,7 +10,7 @@ void imprimirArreglo(int* arr, int size)
 void tirarDados(Jugador* jugador)
 {
     int i;
-    printf("Presione Enter para tirar los dados ");
+    printf("Presione Enter para tirar los dados\n");
     getchar();
     srand(time(0));
     
@@ -18,7 +18,6 @@ void tirarDados(Jugador* jugador)
 
     for (i = 0; i < 5; i++) {
         jugador->dados[i] = rand() % 6 + 1;
-        printf (" Dado %d : %d\n ", i+1, jugador->dados[i]);
     }
 }
 
@@ -63,7 +62,7 @@ bool consultaCambio(Jugador* jugador)
     printf("¿Desea cambiar algún dado? (1 para sí, 0 para no): ");
     scanf("%d", &cambiar);
     
-    if (cambiar) {
+    if (cambiar == 1) {
         jugador->servida = false;
         int contador_cambios = 0;
         int consult;
@@ -89,6 +88,13 @@ bool consultaCambio(Jugador* jugador)
         if (contador_cambios == 5)
             jugador->servida = true;
 
+        return true;
+    }
+    /* para cuestiones de prueba, si ingresamos dos en cambio creamos un generala servida */
+    if (cambiar == 2) {
+        for (int i = 0; i < 5; i++)
+            jugador->dados[i] = 2;
+        jugador->servida = true;
         return true;
     }
 
@@ -224,7 +230,7 @@ int checkPoker(Jugador* jugador)
 	}
 
 	for (int i = 0; i < 6; i++) {
-		if (contador[i] == 4 || contador[i] ==5)
+		if (contador[i] >= 4)
 			return 1;
 	}
 	return 0;
@@ -233,11 +239,17 @@ int checkPoker(Jugador* jugador)
 int checkGenerala(Jugador* jugador)
 {
     int* dados = jugador->dados;
+    int contador = 1;
 
-    if (dados[0] == dados[1] == dados[2] == dados[3] == dados[4])
-        return 1;
-    else
-        return 0;
+    int dado = dados[0];
+
+    for (int i = 1; i < 5; i++) {
+        if (dados[i] != dado)
+            break;
+        contador++;
+    }
+
+    return contador == 5;
 }
 
 int checkGeneralaDoble(Jugador* jugador)
@@ -278,8 +290,8 @@ int* chequeoJugadas(Jugador* jugador)
 
     if (jugador->servida) {
         p_categorias[6] = escalera * 25;
-        p_categorias[7] = escalera * 35;
-        p_categorias[8] = escalera * 45;
+        p_categorias[7] = full * 35;
+        p_categorias[8] = poker * 45;
     }
 
     /* verificamos si hay un generala servida */
@@ -327,6 +339,14 @@ void gameLoop(Jugador jugadores[], int num_jugadores)
                 fin_turno = false;
                 for (int k = 0; k < 3; k++) {
                     imprimirDados(&jugadores[j]);
+
+                    if (checkGenerala(&jugadores[j]) && jugadores[j].servida) {
+                        printf("\nEl ganador es %s por generala servida\n", jugadores[j].nombre);
+                        jugadores[j].ganador = true;
+                        fin_turno = true;
+                        break;
+                    }
+
                     imprimirPuntajeDados(&jugadores[j]);
 
                     /* si no quiere realizar ningun cambio, se quiere quedar con esta jugada */
@@ -337,7 +357,7 @@ void gameLoop(Jugador jugadores[], int num_jugadores)
                     }
                 }
 
-                if (!fin_turno) {
+                if (!fin_turno && !jugadores[j].ganador) {
                     imprimirDados(&jugadores[j]);
                     imprimirPuntajeDados(&jugadores[j]);
                     elegirCategoria(&jugadores[j]);

@@ -34,13 +34,8 @@ Jugador crearJugador(const char* nombre, bool maquina);
 void imprimirCategorias(Jugador* jugador);
 void elegirCategoria(Jugador* jugador);
 void calcularPuntaje(Jugador* jugador);
-/* funciones para verificar jugadas
-    VERIFICAR FUNCIONAMIENTO DE:
-    * checkEscalera
-    * checkFull
-    * checkPoker
 
-*/
+/* funciones para verificar jugadas */
 int checkNum(Jugador* jugador, int dado);
 int checkEscalera(Jugador* jugador);
 int checkFull(Jugador* jugador);
