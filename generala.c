@@ -7,6 +7,29 @@ void imprimirArreglo(int* arr, int size)
     }
 }
 
+void ordenarArreglo(int arr[], int size)
+{
+    bool cambiados;
+    int aux;
+
+    for (int i = 0; i < size - 1; i++) {
+        cambiados = false;
+        for (int j = 0; j < size - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                aux = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = aux;
+                cambiados = true;
+            }
+        }
+
+        // si no hubo cambios, el arreglo ya esta ordenado y podemos salir
+        if (!cambiados)
+            break;
+
+    }
+}
+
 void tirarDados(Jugador* jugador)
 {
     int i;
@@ -332,12 +355,13 @@ void gameLoop(Jugador jugadores[], int num_jugadores)
         /* cada jugador realiza su turno */
         for (int j = 0; j < num_jugadores; j++) {
             /* si el jugador es humano, juega su turno */
+            fin_turno = false;
             if (!jugadores[i].maquina) {
                 /* tiene 3 tiradas posibles */
                 printf("\n\tTurno de %s\n", jugadores[j].nombre);
                 tirarDados(&jugadores[j]);
-                fin_turno = false;
-                for (int k = 0; k < 3; k++) {
+                
+                for (int k = 0; k < 2; k++) {
                     imprimirDados(&jugadores[j]);
 
                     if (checkGenerala(&jugadores[j]) && jugadores[j].servida) {
@@ -363,6 +387,22 @@ void gameLoop(Jugador jugadores[], int num_jugadores)
                     elegirCategoria(&jugadores[j]);
                 }
                 imprimirCategorias(&jugadores[j]);
+            }
+            /* si el jugador es la maquina */
+            else {
+                printf("\n\tTurno de %s\n", jugadores[j].nombre);
+                tirarDados(&jugadores[j]);
+
+                for (int k = 0; k < 2; k++) {
+                    imprimirDados(&jugadores[j]);
+                    
+                    if (checkGenerala(&jugadores[j]) && jugadores[j].servida) {
+                        printf("\nEl ganador es %s por generala servida\n", jugadores[j].nombre);
+                        jugadores[j].ganador = true;
+                        fin_turno = true;
+                        break;
+                    }
+                }
             }
 
             if (jugadores[j].ganador) {
