@@ -407,14 +407,19 @@ void gameLoop(Jugador jugadores[], int num_jugadores)
 
                     categoria_maquina = evaluarMejorCategoria(&jugadores[j]);
 
-                    if (categoria_maquina != 0)
+                    if (categoria_maquina != 0) {
                         elegirCategoriaMaquina(&jugadores[j], categoria_maquina);
+                        fin_turno = true;
+                        break;
+                    }
+                    tirarDados(&jugadores[j]);
                 }
                 if (!fin_turno && !jugadores[j].ganador) {
                     imprimirDados(&jugadores[j]);
                     imprimirPuntajeDados(&jugadores[j]);
-                    elegirCategoria(&jugadores[j]);
+                    elegirCategoriaMaquina(&jugadores[j], categoria_maquina);
                 }
+                imprimirCategorias(&jugadores[j]);
             }
 
             if (jugadores[j].ganador) {

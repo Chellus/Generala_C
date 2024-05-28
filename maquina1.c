@@ -1,15 +1,5 @@
 #include "maquina1.h"
 
-void contarOcurrencias(int dados[5], int contador[6])
-{
-    for (int i = 0; i < 6; i++) {
-        contador[i] = 0;
-    }
-    for (int i = 0; i < 5; i++) {
-        contador[dados[i] - 1]++;
-    }
-}
-
 int evaluarMejorCategoria(Jugador* jugador)
 {
     /* arreglo de 11 elementos
