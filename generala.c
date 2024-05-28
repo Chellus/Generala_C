@@ -1,4 +1,5 @@
 #include "generala.h"
+#include "maquina1.h"
 
 void imprimirArreglo(int* arr, int size)
 {
@@ -349,18 +350,19 @@ void gameLoop(Jugador jugadores[], int num_jugadores)
     bool ganador = false;
     int indice_ganador;
     bool fin_turno;
+    int categoria_maquina;
 
     /* cada jugador tiene un maximo de 11 tiradas en el juego */
     for (int i = 0; i < 11; i++) {
         /* cada jugador realiza su turno */
         for (int j = 0; j < num_jugadores; j++) {
             /* si el jugador es humano, juega su turno */
+            printf("\n\tTurno de %s\n", jugadores[j].nombre);
+            tirarDados(&jugadores[j]);
             fin_turno = false;
-            if (!jugadores[i].maquina) {
+            
+            if (!jugadores[j].maquina) {
                 /* tiene 3 tiradas posibles */
-                printf("\n\tTurno de %s\n", jugadores[j].nombre);
-                tirarDados(&jugadores[j]);
-                
                 for (int k = 0; k < 2; k++) {
                     imprimirDados(&jugadores[j]);
 
@@ -390,9 +392,7 @@ void gameLoop(Jugador jugadores[], int num_jugadores)
             }
             /* si el jugador es la maquina */
             else {
-                printf("\n\tTurno de %s\n", jugadores[j].nombre);
-                tirarDados(&jugadores[j]);
-
+                /* despues de la primera tirada tiene dos tiros mas */
                 for (int k = 0; k < 2; k++) {
                     imprimirDados(&jugadores[j]);
                     
@@ -402,6 +402,18 @@ void gameLoop(Jugador jugadores[], int num_jugadores)
                         fin_turno = true;
                         break;
                     }
+                    
+                    imprimirPuntajeDados(&jugadores[j]);
+
+                    categoria_maquina = evaluarMejorCategoria(&jugadores[j]);
+
+                    if (categoria_maquina != 0)
+                        elegirCategoriaMaquina(&jugadores[j], categoria_maquina);
+                }
+                if (!fin_turno && !jugadores[j].ganador) {
+                    imprimirDados(&jugadores[j]);
+                    imprimirPuntajeDados(&jugadores[j]);
+                    elegirCategoria(&jugadores[j]);
                 }
             }
 

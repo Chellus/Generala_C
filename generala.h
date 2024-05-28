@@ -1,3 +1,5 @@
+#ifndef GENERALA_H
+#define GENERALA_H
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
@@ -62,3 +64,4 @@ def juegoMaquina():
         analizar el siguiente
 
 */
+#endif
